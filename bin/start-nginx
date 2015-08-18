@@ -149,15 +149,19 @@ set-vars() {
     NGINX_GZIP_ENABLED=$(norm-enabled "${NGINX_GZIP_ENABLED:-1}")
     : ${NGINX_GZIP_PROXIED:=any}
     NGINX_GZIP_TYPES=$(expand-types "${NGINX_GZIP_TYPES:-plain css javascript json xml atom+xml rss+xml}")
+    : ${NGINX_REMAP_PORT:=1}
 
     if [[ $NGINX_SOCKET == /* ]]; then
         NGINX_SOCKET=unix:$NGINX_SOCKET
     fi
 
-    # Override $PORT for the app
-    PORT=$NGINX_SOCKET
+    if is-enabled "${NGINX_REMAP_PORT}"; then
+        # Override $PORT for the app
+        PORT=$NGINX_SOCKET
+        export PORT
+    fi
 
-    export ${!NGINX_*} PORT
+    export ${!NGINX_*}
 }
 
 expand-types() {
