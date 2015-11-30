@@ -44,7 +44,7 @@ run-nginx() {
     touch /app/logs/nginx/access.log /app/logs/nginx/error.log
 
     # Start NGINX. SIGQUIT for graceful shutdown.
-    aux-start nginx SIGQUIT bin/nginx -p "$PWD" -c config/nginx.conf
+    aux-start nginx SIGTERM bin/nginx -p "$PWD" -c config/nginx.conf
 
     # Don't exit top script until all subprocesses are done.
     trap '' SIGTERM
