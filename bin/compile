@@ -10,6 +10,7 @@ main() {
     NGINX_VERSION=1.5.12
     NGINX_PCRE_VERSION=8.34
     NGINX_HEADERS_MORE_VERSION=0.25
+    NGINX_PUSH_STREAM_VERSION=master
 
     set -eo pipefail
 
@@ -50,6 +51,7 @@ build-nginx() {
     declare nginx_url=http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
     declare pcre_url=http://downloads.sourceforge.net/project/pcre/pcre/$NGINX_PCRE_VERSION/pcre-$NGINX_PCRE_VERSION.tar.bz2
     declare headers_more_url=https://github.com/agentzh/headers-more-nginx-module/archive/v$NGINX_HEADERS_MORE_VERSION.tar.gz
+    declare nginx_push_stream_module_url=https://github.com/wandenberg/nginx-push-stream-module/archive/$NGINX_PUSH_STREAM_VERSION.tar.gz
 
     (
         set-indent
@@ -61,6 +63,7 @@ build-nginx() {
         cd nginx-$NGINX_VERSION
         curl -#L $pcre_url | tar xj
         curl -#L $headers_more_url | tar xz
+        curl -#L $nginx_push_stream_module_url | tar xz
 
         patch -p1 < $BUILDPACK_DIR/nginx-1.5.12-heroku.patch
 
@@ -68,6 +71,7 @@ build-nginx() {
             --prefix=$nginx_install_dir \
             --with-pcre=pcre-$NGINX_PCRE_VERSION \
             --add-module=$PWD/headers-more-nginx-module-$NGINX_HEADERS_MORE_VERSION \
+            --add-module=$PWD/nginx-push-stream-module-$NGINX_PUSH_STREAM_VERSION \
             --with-http_addition_module \
             --with-http_dav_module \
             --with-http_gzip_static_module \
