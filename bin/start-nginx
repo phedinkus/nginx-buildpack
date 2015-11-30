@@ -40,6 +40,9 @@ run-nginx() {
     # though it will remain an empty file, with actual logging on stderr.
     mkdir -p logs
 
+    mkdir -p /app/logs/nginx
+    touch /app/logs/nginx/access.log /app/logs/nginx/error.log
+
     # Start NGINX. SIGQUIT for graceful shutdown.
     aux-start nginx SIGQUIT bin/nginx -p "$PWD" -c config/nginx.conf
 
