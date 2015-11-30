@@ -7,7 +7,7 @@ main() {
     ENV_DIR=$3
     BUILDPACK_DIR=$(readlink -f $(dirname $(type -P "$0"))/..)
 
-    NGINX_VERSION=1.5.12
+    NGINX_VERSION=1.8.0
     NGINX_PCRE_VERSION=8.34
     NGINX_HEADERS_MORE_VERSION=0.25
     NGINX_PUSH_STREAM_VERSION=master
